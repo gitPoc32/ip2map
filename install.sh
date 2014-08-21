@@ -1,7 +1,10 @@
 #!/bin/bash
 #ip2map installer - spid3y
+# modify the source for not install the kibana, etc and save the result in the path of kibana
+
 user=$(whoami)
-sudo apt-get install build-essential xterm python-setuptools python-dev gzip openjdk-7-jre curl libcurl4-openssl-dev
+#sudo apt-get install build-essential xterm python-setuptools python-dev gzip openjdk-7-jre curl libcurl4-openssl-dev
+sudo sudo apt-get install build-essential python-setuptools python-dev gzip  curl libcurl4-openssl-dev
 sudo easy_install pip
 sudo easy_install virtualenv
 sudo rm -Rf /opt/ip2map
@@ -10,11 +13,11 @@ cd /opt; sudo mkdir ip2map; sudo chown $user:$user ip2map; sudo chmod 755 ip2map
 javahome=$(find /usr/lib/jvm/*7* -name javac | sed "s:bin/javac::")
 
 
-wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.2.tar.gz
-tar -xvf elasticsearch*.tar.gz
-rm elasticsearch*.tar.gz
-mv elasticsearch-1.2.2 elasticsearch
-xterm -e  "JAVA_HOME=$javahome /opt/ip2map/elasticsearch/bin/elasticsearch" &
+# wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.2.tar.gz
+# tar -xvf elasticsearch*.tar.gz
+# rm elasticsearch*.tar.gz
+# mv elasticsearch-1.2.2 elasticsearch
+# xterm -e  "JAVA_HOME=$javahome /opt/ip2map/elasticsearch/bin/elasticsearch" &
 
 virtualenv /opt/ip2map/env
 source /opt/ip2map/env/bin/activate
@@ -24,10 +27,10 @@ mkdir geo; cd geo
 wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz
 gunzip GeoLite2-City.mmdb.gz
 cd ..
-wget https://download.elasticsearch.org/kibana/kibana/kibana-3.1.0.tar.gz
-tar -xvf kibana*.tar.gz
-rm kibana*.tar.gz
-mv kibana* kibana
+# wget https://download.elasticsearch.org/kibana/kibana/kibana-3.1.0.tar.gz
+# tar -xvf kibana*.tar.gz
+# rm kibana*.tar.gz
+# mv kibana* kibana
 cat > ip2map.py <<EOF
 #!/usr/bin/env /opt/ip2map/env/bin/python
 #ip2map by spid3y
@@ -359,5 +362,5 @@ urlToMap = "file:///opt/ip2map/kibana/index.html#/dashboard/file/%s.json\n" % in
 print "\nOpen the followin URL to access your Map: %s" % urlToMap
 EOF
 chmod a+x ip2map.py
-python -c 'f = "/opt/ip2map/kibana/config.js";c = open(f, "r").read().replace("\"+window.location.hostname+\"", "127.0.0.1");fo = open(f, "w");fo.write(c);fo.close()'
+# python -c 'f = "/opt/ip2map/kibana/config.js";c = open(f, "r").read().replace("\"+window.location.hostname+\"", "127.0.0.1");fo = open(f, "w");fo.write(c);fo.close()'
 sudo ln -sf /opt/ip2map/ip2map.py /usr/bin/ip2map 
